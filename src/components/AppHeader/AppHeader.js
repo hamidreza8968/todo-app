@@ -1,4 +1,5 @@
 import Button from "../Button/Button";
+import SelectButton from "../SelectButton/SelectButton"
 import styles from "./AppHeader.module.css";
 
 function AppHeader() {
@@ -8,7 +9,8 @@ function AppHeader() {
 
     return(
         <div className={styles.header}>
-            <Button onClick={onClick} color="#6d6df6">Add Task</Button>
+            <Button onClick={onClick}>Add Task</Button>
+            <SelectButton/>
         </div>
     )
 }
