@@ -10,7 +10,7 @@ SelectButton.propTypes = {
 };
 
 function SelectButton({options = ["All" , "Incomplete" , "Completed"], color = "#cccdde" , fontSize = 1.8}) {
-    const optionsList = options.map(option => <option value="option">{option}</option>);
+    const optionsList = options.map((option , i) => <option value={option} key={i}>{option}</option>);
     const [option , setOption] = useState(options[0]);
     function onChange(e) {
         setOption(option => e.target.value);
