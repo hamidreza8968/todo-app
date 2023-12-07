@@ -4,32 +4,31 @@ import {func} from "prop-types";
 
 const initialState = {
     modalIsOpen: false,
-    title: "",
-    status: "Incomplete",
+    tasks : [{id: 0, title: "" , status: "Incomplete"}]
 };
 
 
-function addTask(title , status){
-    return {type:"task/addTask" , payload:{title , status}};
+export function addTask(title , status){
+    return {type:"tasks/addTask" , payload:{title , status}};
 }
-function updateTitle(title){
+export function updateTitle(title){
     return {type:"task/updateTitle" , payload:title};
 }
-function updateStatus(status){
+export function updateStatus(status){
     return {type:"task/updateStatus" , payload:status};
 }
-function openingModal(){
+export function openingModal(){
     return {type:"modal/openingModal"};
 }
 
 function taskReducer(state=initialState , action) {
     switch (action.type) {
-        case "task/addTask":
-            return {...state , title: action.payload.title , status: action.payload.status};
-        case "task/updateTitle":
-            return {...state , title: action.payload};
-        case "task/updateStatus":
-            return {...state , status: action.payload};
+        case "tasks/addTask":
+            return {...state , tasks: [...{id: action.payload.id,title: action.payload.title , status: action.payload.status}]};
+        case "task/updateTask":
+            return {...state , tasks: [...{title: action.payload.title , status: action.payload.status}]};
+        case "task/deleteTask":
+            return {...state , tasks: state.tasks.filter(task => task.id !== action.payload.id)};
         case "modal/openingModal":
             return {...state , modalIsOpen: true};
         default:
