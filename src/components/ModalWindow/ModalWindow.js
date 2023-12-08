@@ -1,36 +1,41 @@
 import {useDispatch, useSelector} from "react-redux";
-import {updateTitle , updateStatus , addTask} from "../../store";
+import {addItem, deleteItem, editItem} from "../../store";
+import {useState} from "react";
+import Button from "../Button/Button";
+import styles from "./ModalWindow.module.css";
 
-function ModalWindow() {
-    const title = useSelector(store => store.title);
-    const status = useSelector(store => store.status);
+function ModalWindow({onCloseModal}) {
+    const [title, setTitle] = useState("");
+    const [status, setStatus] = useState("Incomplete");
 
     const dispatch = useDispatch();
+    const tasks = useSelector((state) => state.items);
 
-    function handleChangeTitle(title) {
-        dispatch(updateTitle(title));
-    }
-    function handleChangeStatus(status) {
-        dispatch(updateStatus(status));
-    }
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(e.target);
-        // if (!title) return;
-        // dispatch(addTask(title , status));
+        if (!title) return;
+        dispatch(addItem({id: tasks.length + 1, title: title, status: status}));
+        setTitle("");
+        setStatus("Incomplete");
     }
 
     return (
-        <div>
-            <div>☓</div>
-            <form onSubmit={handleSubmit}>
-                <p>Add TODO</p>
-                <label htmlFor="titleInput">Title</label>
-                <input onChange={handleChangeTitle} type="text" id="titleInput" value={title}/>
-                <label htmlFor="statusInput">Title</label>
-                <input onChange={handleChangeStatus} type="text" id="statusInput" value={status}/>
-                <button type="submit">vfrvrvrrf </button>
-            </form>
+        <div className={styles.modalWrapper}>
+            <div className={styles.modalContainer}>
+                <div className={styles.closeModalBtn} onClick={onCloseModal}>☓</div>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <p>Add TODO</p>
+                    <div className={styles.inputPack}>
+                        <label htmlFor="titleInput">Title</label>
+                        <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" id="titleInput"/>
+                    </div>
+                    <div className={styles.inputPack}>
+                        <label htmlFor="statusInput">Status</label>
+                        <input value={status} onChange={(e) => setStatus(e.target.value)} type="text" id="statusInput"/>
+                    </div>
+                    <Button type="submit">Add Task</Button>
+                </form>
+            </div>
         </div>
     )
 }

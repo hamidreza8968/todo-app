@@ -1,18 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
 import PageTitle from "./components/PageTitle/PageTitle";
 import AppHeader from "./components/AppHeader/AppHeader";
-import {useSelector} from "react-redux";
 import ModalWindow from "./components/ModalWindow/ModalWindow";
+import {useState} from "react";
 
 function App() {
-    const modalIsOpen = useSelector(store => store.modalIsOpen);
-    console.log(modalIsOpen);
+    const [modalIsOpen , setModalIsOpen] = useState(false);
+    function handleOpenModal(){
+        setModalIsOpen(true);
+    }
+    function handleCloseModal() {
+        setModalIsOpen(false);
+    }
     return (
     <div className="container">
       <PageTitle/>
-      <AppHeader/>
-      {modalIsOpen && <ModalWindow/>}
+      <AppHeader onOpenModal={handleOpenModal} onCloseModal={handleCloseModal} modalIsOpen={modalIsOpen}/>
+      {modalIsOpen && <ModalWindow onCloseModal={handleCloseModal}/>}
     </div>
   );
 }
